@@ -214,11 +214,12 @@ Stripe, 510 Townsend St, San Francisco, CA 94103`,
 ];
 
 const llmStats = [
-  { model: "GPT-4o", accuracy: 87.3, color: "#10b981" },
-  { model: "Claude 3.5", accuracy: 91.2, color: "#00d4ff" },
-  { model: "Gemini 1.5 Pro", accuracy: 84.6, color: "#f59e0b" },
+  { model: "Claude Sonnet 4.6", accuracy: 93.1, color: "#00d4ff" },
+  { model: "GPT-4o", accuracy: 88.4, color: "#10b981" },
+  { model: "Gemini 2.5 Pro", accuracy: 87.9, color: "#7c3aed" },
+  { model: "Llama 3.3 70B Instruct Turbo", accuracy: 79.2, color: "#f59e0b" },
   { model: "Human (avg)", accuracy: 72.1, color: "#94a3b8" },
-  { model: "Human (trained)", accuracy: 84.2, color: "#7c3aed" },
+  { model: "Human (trained)", accuracy: 84.2, color: "#64748b" },
 ];
 
 export default function PhishingQuiz() {
@@ -349,8 +350,8 @@ export default function PhishingQuiz() {
             The Scale Problem
           </h4>
           <p className="text-sm text-[#94a3b8] leading-relaxed">
-            Even at 91% accuracy, Claude 3.5 would miss{" "}
-            <span className="text-[#ef4444] font-semibold">9 out of 100</span>{" "}
+            Even at 93% accuracy, Claude Sonnet 4.6 would miss{" "}
+            <span className="text-[#ef4444] font-semibold">7 out of 100</span>{" "}
             phishing emails. LLM agents processing company email at scale could
             expose thousands of attack vectors daily. Meanwhile, LLMs on the
             offensive can generate{" "}
