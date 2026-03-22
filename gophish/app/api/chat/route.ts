@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(request: Request) {
   try {
@@ -14,22 +13,29 @@ export async function POST(request: Request) {
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o",
-        max_tokens: 1024,
+        max_tokens: 4096,
         messages,
       });
       const content = completion.choices[0]?.message?.content || "";
       return Response.json({ content, model, simulated: false });
     }
 
-    // ── Gemini 2.5 Pro ────────────────────────────────────────────────────
+    // ── Gemini 2.5 Pro (via OpenRouter) ──────────────────────────────────
     if (model === "gemini") {
-      const googleAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
-      const geminiModel = googleAI.getGenerativeModel({
-        model: "gemini-2.5-pro",
-        systemInstruction: systemPrompt || undefined,
+      const openrouter = new OpenAI({
+        apiKey: process.env.OPENROUTER_API_KEY,
+        baseURL: "https://openrouter.ai/api/v1",
       });
-      const result = await geminiModel.generateContent(prompt);
-      const content = result.response.text();
+      const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [];
+      if (systemPrompt) messages.push({ role: "system", content: systemPrompt });
+      messages.push({ role: "user", content: prompt });
+
+      const completion = await openrouter.chat.completions.create({
+        model: "google/gemini-2.5-pro-preview-03-25",
+        max_tokens: 4096,
+        messages,
+      });
+      const content = completion.choices[0]?.message?.content || "";
       return Response.json({ content, model, simulated: false });
     }
 
@@ -45,7 +51,7 @@ export async function POST(request: Request) {
 
       const completion = await together.chat.completions.create({
         model: "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-        max_tokens: 1024,
+        max_tokens: 4096,
         messages,
       });
       const content = completion.choices[0]?.message?.content || "";
