@@ -148,23 +148,26 @@ export default function PhishingTimeline() {
     const el = scrollRef.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
-    const progress = el.scrollLeft / max;
-    setScrollProgress(progress);
+    setScrollProgress(el.scrollLeft / max);
 
-    // Determine active event
-    const cardWidth = el.scrollWidth / events.length;
-    const idx = Math.min(
-      events.length - 1,
-      Math.floor((el.scrollLeft + el.clientWidth / 2) / cardWidth)
-    );
-    setActiveIndex(idx);
+    const cards = Array.from(el.querySelectorAll(":scope > div")) as HTMLElement[];
+    const viewportCenter = el.scrollLeft + el.clientWidth / 2;
+    let closest = 0, minDist = Infinity;
+    cards.forEach((card, i) => {
+      const dist = Math.abs((card.offsetLeft + card.offsetWidth / 2) - viewportCenter);
+      if (dist < minDist) { minDist = dist; closest = i; }
+    });
+    setActiveIndex(closest);
   };
 
   const scrollTo = (idx: number) => {
     const el = scrollRef.current;
     if (!el) return;
-    const cardWidth = el.scrollWidth / events.length;
-    el.scrollTo({ left: cardWidth * idx, behavior: "smooth" });
+    const cards = Array.from(el.querySelectorAll(":scope > div")) as HTMLElement[];
+    const card = cards[idx];
+    if (!card) return;
+    const left = card.offsetLeft - el.clientWidth / 2 + card.offsetWidth / 2;
+    el.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
   };
 
   return (
@@ -271,7 +274,7 @@ export default function PhishingTimeline() {
       </div>
 
       {/* Dot navigation */}
-      <div className="flex justify-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         {events.map((_, i) => (
           <button
             key={i}

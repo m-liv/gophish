@@ -93,9 +93,6 @@ export default function ChatSimulation() {
 
   const currentModel = models.find((m) => m.id === selectedModel)!;
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, displayedContent]);
 
   const typeOutContent = (content: string) => {
     setTyping(true);

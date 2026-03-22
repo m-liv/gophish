@@ -59,13 +59,6 @@ export default function AgentSimulation() {
   const unsafeEndRef = useRef<HTMLDivElement>(null);
   const robustEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    unsafeEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [unsafeSteps]);
-
-  useEffect(() => {
-    robustEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [robustSteps]);
 
   const runSimulation = async () => {
     if (simState !== "idle") return;

@@ -7,6 +7,7 @@ import ChatSimulation from "./components/ChatSimulation";
 import JailbreakChat from "./components/JailbreakChat";
 import RefusalCharts from "./components/RefusalCharts";
 import AgentSimulation from "./components/AgentSimulation";
+import PhishingAwareness from "./components/PhishingAwareness";
 
 // ─── Section scroll animation wrapper ───────────────────────────────────────
 function Section({
@@ -111,6 +112,7 @@ const navSections = [
   { id: "jailbreak", label: "Jailbreaks" },
   { id: "charts", label: "Statistics" },
   { id: "agent", label: "AI Agent" },
+  { id: "awareness", label: "Awareness" },
 ];
 
 // ─── Main page ───────────────────────────────────────────────────────────────
@@ -364,6 +366,28 @@ export default function Home() {
         onVisible={setActiveSection}
       >
         <AgentSimulation />
+      </ArticleSection>
+
+      {/* ── Prose bridge ────────────────────────────────────────────────── */}
+      <div className="max-w-4xl mx-auto px-6 lg:px-8 py-12 border-b border-[#2a2b4a]/50">
+        <div className="max-w-2xl space-y-4 text-[#94a3b8] leading-relaxed text-base">
+          <p>
+            Understanding these attacks intellectually is one thing. Recognizing them in the wild is another. Here is a complete LLM-generated phishing email, annotated so you can see exactly how each element works.
+          </p>
+        </div>
+      </div>
+
+      {/* ── Feature 7: Phishing Awareness ──────────────────────────────── */}
+      <ArticleSection
+        id="awareness"
+        number="07"
+        tag="Annotated Example"
+        title="Anatomy of an AI-Generated Phishing Email"
+        subtitle="A realistic LLM-generated spear phishing email, broken down piece by piece. Hover over the highlighted sections to understand the social engineering tactic behind each one."
+        accentColor="#10b981"
+        onVisible={setActiveSection}
+      >
+        <PhishingAwareness />
       </ArticleSection>
 
       {/* ── Conclusion ─────────────────────────────────────────────────── */}

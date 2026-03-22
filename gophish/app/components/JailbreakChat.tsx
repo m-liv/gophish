@@ -117,9 +117,6 @@ export default function JailbreakChat() {
   const strategy = strategies.find((s) => s.id === selectedStrategy)!;
   const model = models.find((m) => m.id === selectedModel)!;
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [displayedContent, loading]);
 
   const typeOutContent = (content: string) => {
     setTyping(true);
