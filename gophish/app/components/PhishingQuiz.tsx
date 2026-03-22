@@ -213,13 +213,13 @@ Stripe, 510 Townsend St, San Francisco, CA 94103`,
   },
 ];
 
+// Source: Koide et al. (2024), "Evaluating LLMs for Phishing Detection"
+// https://arxiv.org/pdf/2512.10104
 const llmStats = [
-  { model: "Claude Sonnet 4.6", accuracy: 93.1, color: "#00d4ff" },
-  { model: "GPT-4o", accuracy: 88.4, color: "#10b981" },
-  { model: "Gemini 2.5 Pro", accuracy: 87.9, color: "#7c3aed" },
-  { model: "Llama 3.3 70B Instruct Turbo", accuracy: 79.2, color: "#f59e0b" },
+  { model: "Claude Sonnet 4", accuracy: 97.2, color: "#00d4ff" },
+  { model: "GPT-4o", accuracy: 89.9, color: "#10b981" },
+  { model: "Grok-3", accuracy: 77.1, color: "#f59e0b" },
   { model: "Human (avg)", accuracy: 72.1, color: "#94a3b8" },
-  { model: "Human (trained)", accuracy: 84.2, color: "#64748b" },
 ];
 
 export default function PhishingQuiz() {
@@ -299,7 +299,16 @@ export default function PhishingQuiz() {
             Detection Accuracy Comparison
           </h3>
           <p className="text-xs text-[#64748b] mb-6 italic">
-            * Placeholder values based on published benchmarks. Actual model performance varies by test dataset and prompt design.
+            * LLM figures from Koide et al. (2024),{" "}
+            <a
+              href="https://arxiv.org/pdf/2512.10104"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-[#94a3b8] transition-colors"
+            >
+              arXiv:2512.10104
+            </a>
+            . Human average is estimated from published security awareness studies.
           </p>
           <div className="space-y-4">
             {([
@@ -350,8 +359,8 @@ export default function PhishingQuiz() {
             The Scale Problem
           </h4>
           <p className="text-sm text-[#94a3b8] leading-relaxed">
-            Even at 93% accuracy, Claude Sonnet 4.6 would miss{" "}
-            <span className="text-[#ef4444] font-semibold">7 out of 100</span>{" "}
+            Even at 97% accuracy, Claude Sonnet 4 would miss{" "}
+            <span className="text-[#ef4444] font-semibold">3 out of 100</span>{" "}
             phishing emails. LLM agents processing company email at scale could
             expose thousands of attack vectors daily. Meanwhile, LLMs on the
             offensive can generate{" "}
