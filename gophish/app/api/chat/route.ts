@@ -1,8 +1,22 @@
 import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 
 export async function POST(request: Request) {
   try {
     const { prompt, model, systemPrompt } = await request.json();
+
+    // ── Claude Sonnet ─────────────────────────────────────────────────────
+    if (model === "claude") {
+      const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+      const msg = await anthropic.messages.create({
+        model: "claude-sonnet-4-6",
+        max_tokens: 4096,
+        system: systemPrompt || undefined,
+        messages: [{ role: "user", content: prompt }],
+      });
+      const content = msg.content[0].type === "text" ? msg.content[0].text : "";
+      return Response.json({ content, model, simulated: false });
+    }
 
     // ── GPT-4o ────────────────────────────────────────────────────────────
     if (model === "gpt-4") {

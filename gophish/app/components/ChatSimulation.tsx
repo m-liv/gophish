@@ -13,6 +13,14 @@ interface ModelOption {
 
 const models: ModelOption[] = [
   {
+    id: "claude",
+    name: "Claude Sonnet 4.6",
+    provider: "Anthropic",
+    badge: "LIVE",
+    badgeColor: "text-[#10b981] border-[#10b981]/30 bg-[#10b981]/10",
+    simulated: false,
+  },
+  {
     id: "gpt-4",
     name: "GPT-4o",
     provider: "OpenAI",

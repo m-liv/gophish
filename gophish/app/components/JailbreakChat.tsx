@@ -9,6 +9,7 @@ interface ModelOption {
 }
 
 const models: ModelOption[] = [
+  { id: "claude", name: "Claude Sonnet 4.6", provider: "Anthropic" },
   { id: "gpt-4", name: "GPT-4o", provider: "OpenAI" },
   { id: "gemini", name: "Gemini 2.5 Pro", provider: "Google" },
   { id: "llama", name: "Llama 3.3 70B Instruct Turbo", provider: "Meta · Together AI" },
