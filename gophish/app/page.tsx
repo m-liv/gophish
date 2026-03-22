@@ -339,7 +339,7 @@ export default function Home() {
         number="05"
         tag="Data Explorer"
         title="By the Numbers"
-        subtitle="Interactive charts showing LLM refusal rates, phishing detection accuracy, and attack volume trends. Toggle between views to explore the data."
+        subtitle="Interactive charts showing LLM refusal rates and attack volume trends across prompt types. Toggle between views to explore the data."
         accentColor="#00d4ff"
         onVisible={setActiveSection}
       >

@@ -2,15 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 
-type ChartView = "refusal" | "detection" | "trend";
+type ChartView = "refusal" | "trend";
 
 interface ModelRefusal {
   model: string;
   provider: string;
   direct: number;
-  educational: number;
-  fictional: number;
-  pentest: number;
+  jailbreak: number;
   color: string;
 }
 
@@ -19,94 +17,39 @@ const refusalData: ModelRefusal[] = [
     model: "Claude Sonnet 4.6",
     provider: "Anthropic",
     direct: 98,
-    educational: 91,
-    fictional: 87,
-    pentest: 83,
+    jailbreak: 87,
     color: "#00d4ff",
   },
   {
     model: "GPT-4o",
     provider: "OpenAI",
     direct: 94,
-    educational: 76,
-    fictional: 71,
-    pentest: 68,
+    jailbreak: 72,
     color: "#10b981",
   },
   {
     model: "Gemini 2.5 Pro",
     provider: "Google",
     direct: 93,
-    educational: 78,
-    fictional: 72,
-    pentest: 67,
+    jailbreak: 72,
     color: "#7c3aed",
   },
   {
     model: "Llama 3.3 70B Instruct Turbo",
     provider: "Meta",
     direct: 71,
-    educational: 43,
-    fictional: 36,
-    pentest: 30,
+    jailbreak: 36,
     color: "#f59e0b",
   },
   {
     model: "WormGPT",
     provider: "Criminal (dark web)",
     direct: 2,
-    educational: 1,
-    fictional: 1,
-    pentest: 0,
+    jailbreak: 1,
     color: "#ef4444",
   },
 ];
 
-interface DetectionStat {
-  label: string;
-  value: number;
-  color: string;
-  note: string;
-}
-
-const detectionData: DetectionStat[] = [
-  {
-    label: "Human (untrained)",
-    value: 72,
-    color: "#64748b",
-    note: "Average person, no security awareness training",
-  },
-  {
-    label: "Human (trained)",
-    value: 84,
-    color: "#94a3b8",
-    note: "After standard corporate security awareness training",
-  },
-  {
-    label: "GPT-4o as detector",
-    value: 88,
-    color: "#10b981",
-    note: "Using GPT-4o as a binary phishing classifier",
-  },
-  {
-    label: "Claude Sonnet 4.6 as detector",
-    value: 93,
-    color: "#00d4ff",
-    note: "Using Claude Sonnet 4.6 with structured analysis prompt",
-  },
-  {
-    label: "Specialized ML model",
-    value: 94,
-    color: "#7c3aed",
-    note: "Fine-tuned BERT classifier on phishing datasets",
-  },
-  {
-    label: "LLM-generated (detected)",
-    value: 61,
-    color: "#ef4444",
-    note: "Detection rate for AI-generated spear phishing (harder to detect)",
-  },
-];
 
 interface TrendPoint {
   year: string;
@@ -127,67 +70,18 @@ const trendData: TrendPoint[] = [
   { year: "2024", volume: 220, successRate: 41 },
 ];
 
-type PromptKey = "direct" | "educational" | "fictional" | "pentest";
+type PromptKey = "direct" | "jailbreak";
 
 const promptLabels: Record<PromptKey, string> = {
   direct: "Direct Request",
-  educational: "Educational Framing",
-  fictional: "Fictional Framing",
-  pentest: "Pen Test Framing",
+  jailbreak: "Jailbreak Request",
 };
 
 const promptColors: Record<PromptKey, string> = {
   direct: "#10b981",
-  educational: "#f59e0b",
-  fictional: "#ef4444",
-  pentest: "#ff00ff",
+  jailbreak: "#ef4444",
 };
 
-function AnimatedBar({
-  value,
-  max,
-  color,
-  animate,
-  label,
-  subLabel,
-}: {
-  value: number;
-  max: number;
-  color: string;
-  animate: boolean;
-  label?: string;
-  subLabel?: string;
-}) {
-  return (
-    <div className="space-y-1">
-      {label && (
-        <div className="flex justify-between items-baseline">
-          <span className="text-xs text-[#94a3b8]">{label}</span>
-          {subLabel && (
-            <span className="text-xs text-[#64748b] italic">{subLabel}</span>
-          )}
-        </div>
-      )}
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-5 bg-[#1a1b35] rounded overflow-hidden relative">
-          <div
-            className="h-full rounded transition-all duration-1000 ease-out flex items-center pl-2"
-            style={{
-              width: animate ? `${(value / max) * 100}%` : "0%",
-              backgroundColor: color,
-              boxShadow: `0 0 10px ${color}40`,
-              minWidth: animate ? "2rem" : "0",
-            }}
-          >
-            <span className="text-xs font-mono font-bold text-[#06060f] whitespace-nowrap">
-              {value}%
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function RefusalCharts() {
   const [activeView, setActiveView] = useState<ChartView>("refusal");
@@ -219,7 +113,6 @@ export default function RefusalCharts() {
         {(
           [
             { id: "refusal", label: "Refusal Rates", icon: "🛡️" },
-            { id: "detection", label: "Detection Accuracy", icon: "🔍" },
             { id: "trend", label: "Attack Trends", icon: "📈" },
           ] as { id: ChartView; label: string; icon: string }[]
         ).map((view) => (
@@ -329,52 +222,6 @@ export default function RefusalCharts() {
             <p className="text-xs text-[#94a3b8] leading-relaxed">
               <span className="text-[#f0f0ff] font-semibold">Key insight:</span>{" "}
               As prompt sophistication increases, refusal rates drop significantly — even for safety-aligned models. The gap between direct requests (high refusal) and pen test framing (lower refusal) represents the attack surface that adversarial prompt engineers exploit.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Detection accuracy view */}
-      {activeView === "detection" && (
-        <div className="space-y-4">
-          <p className="text-xs text-[#64748b] italic">
-            * Placeholder values. Actual accuracy varies significantly by dataset and evaluation methodology.
-          </p>
-          <div className="bg-[#0f1020] border border-[#2a2b4a] rounded-xl p-5 space-y-5">
-            <div className="text-sm font-semibold text-[#f0f0ff]">
-              Phishing Detection Accuracy by Detector Type
-            </div>
-            {detectionData.map((stat) => (
-              <div key={stat.label} className="space-y-1.5">
-                <div className="flex justify-between items-baseline">
-                  <span className="text-xs font-medium text-[#94a3b8]">
-                    {stat.label}
-                  </span>
-                  <span
-                    className="text-xs font-mono font-bold"
-                    style={{ color: stat.color }}
-                  >
-                    {stat.value}%
-                  </span>
-                </div>
-                <div className="h-2 bg-[#1a1b35] rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-1000 ease-out"
-                    style={{
-                      width: animate ? `${stat.value}%` : "0%",
-                      backgroundColor: stat.color,
-                      boxShadow: `0 0 8px ${stat.color}40`,
-                    }}
-                  />
-                </div>
-                <div className="text-xs text-[#64748b] italic">{stat.note}</div>
-              </div>
-            ))}
-          </div>
-          <div className="bg-[#ef4444]/5 border border-[#ef4444]/20 rounded-xl p-4">
-            <p className="text-xs text-[#94a3b8] leading-relaxed">
-              <span className="text-[#ef4444] font-semibold">The detection gap:</span>{" "}
-              LLM-generated spear phishing is detected at only <span className="text-[#ef4444] font-bold">61%</span> — far below the 91–94% rates for generic phishing. This is because AI-generated emails are grammatically perfect, contextually personalized, and free from the spelling errors that traditional filters rely on.
             </p>
           </div>
         </div>
