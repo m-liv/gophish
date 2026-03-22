@@ -16,37 +16,30 @@ const refusalData: ModelRefusal[] = [
   {
     model: "Claude Sonnet 4.6",
     provider: "Anthropic",
-    direct: 98,
-    jailbreak: 87,
+    direct: 97,
+    jailbreak: 9,
     color: "#00d4ff",
+  },
+  {
+    model: "Llama 3.3 70B Instruct Turbo",
+    provider: "Meta",
+    direct: 78,
+    jailbreak: 0,
+    color: "#f59e0b",
   },
   {
     model: "GPT-4o",
     provider: "OpenAI",
-    direct: 94,
-    jailbreak: 72,
+    direct: 64,
+    jailbreak: 0,
     color: "#10b981",
   },
   {
     model: "Gemini 2.5 Pro",
     provider: "Google",
-    direct: 93,
-    jailbreak: 72,
+    direct: 0,
+    jailbreak: 0,
     color: "#7c3aed",
-  },
-  {
-    model: "Llama 3.3 70B Instruct Turbo",
-    provider: "Meta",
-    direct: 71,
-    jailbreak: 36,
-    color: "#f59e0b",
-  },
-  {
-    model: "WormGPT",
-    provider: "Criminal (dark web)",
-    direct: 2,
-    jailbreak: 1,
-    color: "#ef4444",
   },
 ];
 
@@ -136,7 +129,7 @@ export default function RefusalCharts() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-xs text-[#64748b] italic">
-              * Placeholder values based on published safety benchmarks
+              * Results from the GoPhish benchmark (36 direct / 108 jailbreak prompts, Claude Opus 4.6 as judge)
             </p>
           </div>
 
@@ -221,7 +214,7 @@ export default function RefusalCharts() {
           <div className="bg-[#1a1b35]/50 border border-[#2a2b4a] rounded-xl p-4">
             <p className="text-xs text-[#94a3b8] leading-relaxed">
               <span className="text-[#f0f0ff] font-semibold">Key insight:</span>{" "}
-              As prompt sophistication increases, refusal rates drop significantly — even for safety-aligned models. The gap between direct requests (high refusal) and pen test framing (lower refusal) represents the attack surface that adversarial prompt engineers exploit.
+              Jailbreak prompts collapse refusal rates to near zero across all models — including Claude, which dropped from 97% to 9%. Gemini 2.5 Pro complied with every direct phishing request in our benchmark. Only Claude showed meaningful resistance on direct prompts; no model held under jailbreak pressure.
             </p>
           </div>
         </div>
